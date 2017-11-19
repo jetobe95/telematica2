@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+      <meta charset="UTF-8">
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+
+          <link rel="stylesheet" href="css/style.css">
+
+    <style type="text/css">
+    tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg .tg-zj4f{font-weight:bold;font-size:16px;font-family:"Trebuchet MS", Helvetica, sans-serif !important;;background-color:#ffffff;text-align:center;vertical-align:top}
+.tg .tg-lbsp{background-color:#ffffff;font-size:16px;font-family:"Trebuchet MS", Helvetica, sans-serif !important;;text-align:center;vertical-align:top}
+div.orga{
+  float: left;
+     width: 270px;
+     height: 35px;
+     margin: 20px;
+     padding: 10px;
+      solid black;
+
+}
+
+
+
+</style>
+  <style type="text/css">
+    </style>
+    <meta charset="utf-8">
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
+<script type="text/javascript">
+var config = {
+  apiKey: "AIzaSyB2pJbPkM6Fcis1MxmfmYa-NrfqpsMaC3c",
+  authDomain: "telematica-protagonistas.firebaseapp.com",
+  databaseURL: "https://telematica-protagonistas.firebaseio.com",
+  projectId: "telematica-protagonistas",
+  storageBucket: "telematica-protagonistas.appspot.com",
+  messagingSenderId: "933116202723"
+};
+firebase.initializeApp(config);
+
+</script>
+<script src="js/registrer.js"></script>
+
+    <title>Votaciones</title>
+  </head>
+  <body>
+  <script type="text/javascript">
+
+var clicks=0;
+function mensaje(element){
+
+  console.log("Presionaste el boton"+element.value.split(" "));
+  element.disabled=true;
+
+
+  firebase.database().ref('Participantes/' + element.value.split(" ")[0]).update({
+    votos: parseInt(element.value.split(" ")[1])+1,
+    activo:false
+
+  });
+  clicks++;
+  if (clicks>=2) {
+    for (var i = 0; i < document.getElementsByTagName("button").length; i++) {
+      document.getElementsByTagName("button")[i].disabled=true;
+      clicks=0;
+    }
+
+  }
+
+}
+//handleSignUp();
+
+  </script>
+    <script type="text/javascript">
+    time=[];
+    function initApp() {//Funcion que se ejecuta cuando la pagina carga
+      contador=0;
+      //-----Oyente cuando un cambio en la autenticacion-----
+
+  firebase.auth().onAuthStateChanged(function(user) {
+
+    if (user) {//Si se esta logeado me entra al si en caso contrario estra al ELSE
+  $("#prota").hide();
+  usar=user;
+  try {
+    firebase.database().ref('Votantes/' + user.uid).update({
+      nombre:name,
+      correo:user.email,
+      cedula:cedula,
+      activo:true
+
+    });
+
+  } catch (e) {
+    console.log("varibles vacias");
+
+  } finally {
+
+  }
+
+
+
+
+  console.log("User es "+user);
+  console.log("Login exitoso");
+
+var scoresRef = firebase.database().ref("Participantes");//Esto es para la lectura leer la base de datos de Participantes
+var scoresRef2 = firebase.database().ref("tiempo");
+//x = new Date(ui+'-'+tempini[1]+'-'+tempini[0]+" "+ uit);
+ //y = new Date(ut+'-'+temp[1]+'-'+temp[0]+" "+utt);
+//z = new Date(uf+'-'+tempfin[1]+'-'+tempfin[0]+" "+uft);
+
+
+scoresRef2.once("value", function(snapshot) {
+  console.log(snapshot.val());
+
+snapshot.forEach(function(data) {
+
+da=data.val().split(" ");
+
+d = new Date(da[2]+"-"+da[1]+"-"+da[0]+" "+da[3]+":"+da[4]);
+  time.push(d);
+  //time[0]--final
+  //time[1]---incial
+
+
+
+});
+system = new Date();
+console.log(time[0]+"final "+time[1]);
+if (time[1]<system && time[0]>system) {
+  console.log("Votactiones habilitada");
+  time=[];
+  div=document.getElementById("participantes")
+
+  scoresRef.once("value", function(snapshot) {
+
+  snapshot.forEach(function(data) {
+    dat=data;
+    var tr,td,tr2,td2,th,td;
+    tr="<tr>";
+    tr2="</tr>";
+    th="<th class="+"tg-zj4f"+">";//Para el titutilo de la columna
+    th2="<br></th>";
+    td= "<td class="+"tg-lbsp"+">";
+    td2="</td>";
+
+
+//---MOSTRAR LA Foto
+
+
+
+
+
+//--------
+
+var div=document.getElementById('participante');
+var crear = document.createElement('div');
+crear.setAttribute("class","orga");
+var crear1 = document.createElement('table');
+  img= "<img src="+dat.val().foto+ " height="+"150 " + "width="+"200 >";
+crear1.innerHTML= tr+th+ "Foto"+th2 +tr2 +tr+td+ img
++td2 +tr2+tr+td+ "Nombre"+td2 +tr2+tr+td+ dat.val().nombre+td2 +tr2+
+tr+td+ "Descripción"+td2 +tr2+tr+td+ dat.val().bio+td2 +tr2+
+tr+td+ "Canciones"+td2 +tr2+tr+td+ "------"+td2 +tr2;
+crear1.setAttribute("class","tg");
+
+crear.appendChild(crear1);
+div.appendChild(crear);
+var crear2=document.createElement("input");
+var btn = document.createElement("BUTTON");
+btn.setAttribute('onclick',"mensaje(this)" );
+  //btn.setAttribute("disabled",true);
+
+
+
+btn.setAttribute("value",dat.val().nombre +" "+dat.val().votos );
+
+    var t = document.createTextNode("VOTAR");
+    btn.appendChild(t);
+   crear.appendChild(btn);
+crear1.setAttribute('border', 1);
+
+
+
+
+
+
+
+
+
+  });
+  });
+
+
+
+
+
+
+
+}
+else {
+  console.log("Votacion deshabilitadas");
+  alert("Votacion deshabilitadas");
+  time=[];
+    firebase.auth().signOut();
+}
+
+});
+
+
+    } else {
+
+      contador++
+      console.log("User es "+user);
+        console.log("Login NO exitoso");
+        //document.getElementById('cerrarsesion').disabled = true;
+  $("#prota").show();
+    $("#participante").hide();
+        if (contador>=2) {
+          window.history.back();
+
+            contador=0;
+
+        }
+
+
+
+    }
+
+  });
+
+
+
+}
+
+window.onload = function() {
+  initApp();
+};
+function cerrarsesion() {
+
+  firebase.auth().signOut();
+        // [END signout]
+}
+
+    </script>
+    <div class="form" id="prota">
+        <h1>PROTAGONISTAS 2017</h1>
+
+        <div id="signvotar">
+          <h1>Registrate Como Votante</h1>
+
+
+
+  <div class="top-row">
+    <div class="field-wrap">
+      <label>
+        Nombre <span class="req">*</span>
+      </label>
+      <input type="text" required autocomplete="off" id="name" />
+    </div>
+
+    <div class="field-wrap">
+      <label>
+        Cedula  <span class="req">*</span>
+      </label>
+      <input type="text"required autocomplete="off" id="cedula" />
+    </div>
+  </div>
+
+  <div class="field-wrap">
+    <label>
+      Correo <span class="req">*</span>
+    </label>
+    <input type="text" required autocomplete="off" id="email"/>
+  </div>
+
+  <div class="field-wrap">
+    <label>
+      Contraseña
+    </label>
+    <input type="password"required autocomplete="off" id="password"/>
+  </div>
+
+
+  <button   onclick="handleSignUp()"  class="button button-block" id="registrar"/>Registrar</button>
+
+
+
+
+
+        </div>
+
+        <div class="tab-content">
+
+          <div id="prota2">
+
+    <button onclick="cerrarsesion()"  id="Cerra" />Cerra Sesion</button>
+
+
+          </div>
+
+
+        </div><!-- tab-content -->
+
+
+  </div> <!-- /form -->
+    <script  src="js/index.js"></script>
+    <div id="participante">
+      <li id="list"></li>
+      <button type="button" onclick="cerrarsesion()" name="button">Cerrar Session</button>
+
+    </div>
+
+  </body>
+</html>
